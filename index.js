@@ -1,4 +1,6 @@
 // Imports.  See package.json dependencies,
+var counter;
+var failCount;
 var firebase = require('firebase');
 var fs = require('fs');
 var request = require('request');
@@ -32,6 +34,7 @@ fs.writeFile('super_secret.json', credentialString, function(err) {
     // Get the API data periodically
     request(url, function (error, response, body) {
       if (!error && response.statusCode == 200) {
+        counter++;
         /*
          *  Turn { "timestamp": 12345, "ba": 1, "bx": 2, ... }
          *  into: { 12345: { "timestamp": 12345, "ba": 1, "bx": 2, ...} }
@@ -41,6 +44,8 @@ fs.writeFile('super_secret.json', credentialString, function(err) {
 
         record[data.timestamp] = data;
         historicalData.update(record);
+      }else{
+        failCount++;
       }
     });
   }, 1000 * 60 * 5);
@@ -54,7 +59,7 @@ var requestProxy = require('express-request-proxy'),
 
 app.get('*', function(request, response) {
   console.log('New request:', request.url);
-  response.send('HELLO WORLD');
+  response.send('collects=' + counter + '' + 'fails=' + failCount);
 });
 
 app.listen(port, function() {
