@@ -8,7 +8,8 @@ var credentialString = Buffer.from(credentialBase64, 'base64');
 var credential = JSON.parse(credentialString);
 
 firebase.initializeApp({
-  serviceAccount: credential,
+  serviceAccount: 'dummy.json',
+  databaseAuthVariableOverride: credential,
   databaseURL: 'https://bike-map-fd305.firebaseio.com/',
 });
 
