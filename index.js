@@ -5,7 +5,8 @@ var fs = require('fs');
 var url = 'https://secure.prontocycleshare.com/data/stations.json';
 
 var credentialBase64 = process.env['FIREBASE_CREDENTIAL'];
-var credentialString = Buffer.from(credentialBase64, 'base64');
+var buffer = new Buffer(credentialBase64, 'base64');
+var credentialString = buffer.toString('ascii');
 
 fs.writeFile('super_secret.json', credentialString, function(err) {
   if(err) {
