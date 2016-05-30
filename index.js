@@ -44,6 +44,7 @@ fs.writeFile('super_secret.json', credentialString, function(err) {
 
         record[data.timestamp] = data;
         historicalData.update(record);
+        console.log('new array was added');
       }else{
         failCount++;
       }
