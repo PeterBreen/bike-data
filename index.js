@@ -1,6 +1,6 @@
 var firebase = require('firebase');
-var http = require('http');
 var fs = require('fs');
+var request = require('request');
 
 var url = 'https://secure.prontocycleshare.com/data/stations.json';
 
@@ -22,19 +22,12 @@ fs.writeFile('super_secret.json', credentialString, function(err) {
   var historicalData = db.ref('data');
 
   setInterval(function(){
-    http.get(url, function(res){
-      var body = '';
-
-      res.on('data', function(chunk){
-        body += chunk;
-      });
-
-      res.on('end', function(){
+    request(url, function (error, response, body) {
+      if (!error && response.statusCode == 200) {
         var record = {};
-        var recordBody = JSON.parse(body);
-        record[recordBody.timestamp] = recordBody;
+        record[body.timestamp] = body;
         historicalData.update(record);
-      });
+      }
     });
   }, 1000 * 5);
 });

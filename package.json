@@ -9,10 +9,8 @@
   "author": "Code Fellows",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.13.3",
-    "express-request-proxy": "^1.0.10",
     "firebase": "^3.0.3",
     "fs": "0.0.2",
-    "http": "0.0.0"
+    "request": "^2.72.0"
   }
 }
