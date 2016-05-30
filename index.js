@@ -1,6 +1,6 @@
 // Imports.  See package.json dependencies,
-var counter;
-var failCount;
+var counter = 0;
+var failCount = 0;
 var firebase = require('firebase');
 var fs = require('fs');
 var request = require('request');
