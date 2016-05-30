@@ -10,3 +10,5 @@ npm-debug.log
 # Docker
 Dockerfile
 docker-compose.yml
+
+bike-map-e25d0a309d01.json

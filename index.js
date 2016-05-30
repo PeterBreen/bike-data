@@ -1,20 +1,33 @@
-var express = require('express');
-var app = express();
+var firebase = require('firebase');
+var http = require('http');
 
-app.set('port', (process.env.PORT || 5000));
+var url = 'https://secure.prontocycleshare.com/data/stations.json';
 
-app.use(express.static(__dirname + '/public'));
+var credentialBase64 = process.env['FIREBASE_CREDENTIAL'];
+var credentialString = Buffer.from(credentialBase64, 'base64');
+var credential = JSON.parse(credentialString);
 
-// views is directory for all template files
-app.set('views', __dirname + '/views');
-app.set('view engine', 'ejs');
-
-app.get('/', function(request, response) {
-  response.render('pages/index');
+firebase.initializeApp({
+  serviceAccount: credential,
+  databaseURL: 'https://bike-map-fd305.firebaseio.com/',
 });
 
-app.listen(app.get('port'), function() {
-  console.log('Node app is running on port', app.get('port'));
-});
+var db = firebase.database();
+var historicalData = db.ref('data');
 
+setInterval(function(){
+  http.get(url, function(res){
+    var body = '';
 
+    res.on('data', function(chunk){
+      body += chunk;
+    });
+
+    res.on('end', function(){
+      var record = {};
+      var recordBody = JSON.parse(body);
+      record[recordBody.timestamp] = recordBody;
+      historicalData.update(record);
+    });
+  });
+}, 1000 * 60 * 30);

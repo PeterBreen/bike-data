@@ -10,6 +10,8 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.13.3",
-    "express-request-proxy": "^1.0.10"
+    "express-request-proxy": "^1.0.10",
+    "firebase": "^3.0.3",
+    "http": "0.0.0"
   }
 }
