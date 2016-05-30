@@ -32,3 +32,19 @@ fs.writeFile('super_secret.json', credentialString, function(err) {
     });
   }, 1000 * 60 * 30);
 });
+
+
+// for health check
+var requestProxy = require('express-request-proxy'),
+  express = require('express'),
+  port = process.env.PORT || 3000,
+  app = express();
+
+app.get('*', function(request, response) {
+  console.log('New request:', request.url);
+  response.send('HELLO WORLD');
+});
+
+app.listen(port, function() {
+  console.log('Server started on port ' + port + '!');
+});
