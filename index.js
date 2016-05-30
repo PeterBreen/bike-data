@@ -24,10 +24,11 @@ fs.writeFile('super_secret.json', credentialString, function(err) {
   setInterval(function(){
     request(url, function (error, response, body) {
       if (!error && response.statusCode == 200) {
+        var data = JSON.parse(body);
         var record = {};
-        record[body.timestamp] = body;
+        record[data.timestamp] = data;
         historicalData.update(record);
       }
     });
-  }, 1000 * 5);
+  }, 1000 * 60 * 30);
 });
