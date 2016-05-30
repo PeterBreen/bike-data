@@ -38,11 +38,19 @@ fs.writeFile('super_secret.json', credentialString, function(err) {
         /*
          *  Turn { "timestamp": 12345, "ba": 1, "bx": 2, ... }
          *  into: { 12345: { "timestamp": 12345, "ba": 1, "bx": 2, ...} }
+         var myDate = new Date( your epoch date *1000);
+document.write(myDate.toGMTString()+"<br>"+myDate.toLocaleString());
          */
+        var doFormat = function(time){
+          return new Date(time * 1000).toGMTString();
+        };
         var data = JSON.parse(body);
         var record = {};
 
-        record[data.timestamp] = data;
+        var timestamp  = data.timestamp;
+        var formatted = doFormat(timestamp);
+
+        record[formatted] = data;
         historicalData.update(record);
         console.log('new array was added');
       }else{
