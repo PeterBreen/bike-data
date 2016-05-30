@@ -8,6 +8,8 @@ var request = require('request');
 // External API URL endpoint
 var url = 'https://secure.prontocycleshare.com/data/stations.json';
 
+var selfUrl = 'https://aqueous-badlands-85541.herokuapp.com/';
+
 // Dump the secrets from ENV variable into a file.
 // This is because firebase cannot initialize without secrets stored in a file.
 var credentialBase64 = process.env['FIREBASE_CREDENTIAL'];
@@ -42,7 +44,7 @@ fs.writeFile('super_secret.json', credentialString, function(err) {
 document.write(myDate.toGMTString()+"<br>"+myDate.toLocaleString());
          */
         var doFormat = function(time){
-          return new Date(time * 1000).toGMTString();
+          return new Date(time).toGMTString();
         };
         var data = JSON.parse(body);
         var record = {};
@@ -52,13 +54,18 @@ document.write(myDate.toGMTString()+"<br>"+myDate.toLocaleString());
 
         record[formatted] = data;
         historicalData.update(record);
-        console.log('new array was added');
+        console.log('new array was added at index ' + formatted);
       }else{
         failCount++;
       }
     });
   }, 1000 * 60 * 5);
 });
+
+// Keep from idling out
+setInterval(function(){
+  request(selfUrl);
+}, 60 * 1000);
 
 // for health check.  Otherwise, heroku kills the app.
 var requestProxy = require('express-request-proxy'),
