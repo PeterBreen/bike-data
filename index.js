@@ -24,13 +24,15 @@ fs.writeFile('super_secret.json', credentialString, function(err) {
   setInterval(function(){
     request(url, function (error, response, body) {
       if (!error && response.statusCode == 200) {
+        console.log("Got API DATA!!!!")
         var data = JSON.parse(body);
         var record = {};
         record[data.timestamp] = data;
         historicalData.update(record);
+        console.log('sent to db')
       }
     });
-  }, 1000 * 60 * 30);
+  }, 1000 * 5);
 });
 
 
