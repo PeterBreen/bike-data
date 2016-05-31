@@ -52,9 +52,9 @@ document.write(myDate.toGMTString()+"<br>"+myDate.toLocaleString());
         var timestamp  = data.timestamp;
         var formatted = doFormat(timestamp);
 
-        record[timestamp] = data;
+        record[formatted] = data;
         historicalData.update(record);
-        console.log('new array was added at index ' + timestamp);
+        console.log('new array was added at index ' + formatted);
       }else{
         failCount++;
       }
